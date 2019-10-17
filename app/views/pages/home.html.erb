@@ -1,8 +1,9 @@
 <h1>Rezoom</h1>
+<p id="notice"><%= notice %></p>
 <% if logged_in? %>
-  <%= link_to 'My Account', current_user %>
+  <%= link_to 'My Account', current_user %><br/>
   <%= link_to 'Logout', logout_path, method: :delete %>
 <% else %>
-  <%= link_to 'Login', login_path %>
+  <%= link_to 'Login', login_path %><br/>
   <%= link_to 'New Account', new_user_path %>
 <% end %>
