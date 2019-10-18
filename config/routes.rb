@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :resumes
   root 'static_pages#home'
 
   get '/login', to: 'sessions#new'

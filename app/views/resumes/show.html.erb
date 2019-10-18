@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>File content path:</strong>
+  <%= @resume.file_content.path %>
+</p>
+
+<p>
+  <strong>Resume Link:</strong>
+  <%= link_to "View Resume", @resume.file_content_url unless @resume.file_content.nil? %>
+</p>
+
+
+<p>
+  <strong>User:</strong>
+  <%= @resume.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_resume_path(@resume) %> |
+<%= link_to 'Back', resumes_path %>
