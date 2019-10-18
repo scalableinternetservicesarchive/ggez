@@ -10,17 +10,11 @@
   <%= @user.industry %>
 </p>
 
-<% unless @user.resume.nil? %>
 <p>
   <strong>Resume:</strong>
-  <%=  link_to 'See Resume', resume_path(@user.resume)  %>
+  <%=  link_to 'See Resumes', resumes_path  %>
 </p>
-<% end %>
 
-<% if @user.resume.nil? %>
-  <%= link_to 'Create Resume', new_resume_path %> |
-<% else %>
-  <%= link_to 'Edit Resume', edit_resume_path(@user.resume) %> |
-<% end %>
+<%= link_to 'Create Resume', new_resume_path %> |
 <%= link_to 'Edit User', edit_user_path(@user) %> |
 <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
