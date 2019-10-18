@@ -12,14 +12,24 @@
   transform: translate(-50%, -50%);
 }
 
+.page-header {
+  margin-top: 3%;
+  text-align: center;
+}
+
 .mgTp {
-    margin-top:10%;
+  margin-top:10%;
 }
 
 .topBtn {
-    margin-top:15px;
+  margin-top:15px;
 }
 
 .danger {
-    color: red;
+  color: red;
+}
+
+.card {
+  background-color: #f1f7ed;
+  margin: 2%;
 }
