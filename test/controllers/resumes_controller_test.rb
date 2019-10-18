@@ -17,7 +17,7 @@ class ResumesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create resume" do
     assert_difference('Resume.count') do
-      post resumes_url, params: { resume: { file_content: @resume.file_content, user_id: @resume.user_id } }
+      post resumes_url, params: { resume: { file: @resume.file, user_id: @resume.user_id } }
     end
 
     assert_redirected_to resume_url(Resume.last)
@@ -34,7 +34,7 @@ class ResumesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update resume" do
-    patch resume_url(@resume), params: { resume: { file_content: @resume.file_content, user_id: @resume.user_id } }
+    patch resume_url(@resume), params: { resume: { file: @resume.file, user_id: @resume.user_id } }
     assert_redirected_to resume_url(@resume)
   end
 

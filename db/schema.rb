@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2019_10_17_213547) do
 
   create_table "resumes", force: :cascade do |t|
-    t.text "file_content"
+    t.text "file"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

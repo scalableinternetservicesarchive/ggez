@@ -1,8 +1,8 @@
 <h1>New Resume</h1>
 
 <%= form_for @resume, html: { multipart: true } do |f| %>
-  <%= f.label :file_content %>
-  <%= f.file_field :file_content %>
+  <%= f.label :file %>
+  <%= f.file_field :file %>
   <%= f.submit "Save"%>
 <% end %>
 

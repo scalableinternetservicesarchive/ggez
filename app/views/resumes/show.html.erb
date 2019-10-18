@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>File content path:</strong>
-  <%= @resume.file_content.path %>
+  <strong>File path:</strong>
+  <%= @resume.file.path %>
 </p>
 
 <p>
   <strong>Resume Link:</strong>
-  <%= link_to "View Resume", @resume.file_content_url unless @resume.file_content.nil? %>
+  <%= link_to "View Resume", @resume.file_url unless @resume.file.nil? %>
 </p>
 
 

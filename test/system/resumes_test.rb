@@ -14,7 +14,7 @@ class ResumesTest < ApplicationSystemTestCase
     visit resumes_url
     click_on "New Resume"
 
-    fill_in "File content", with: @resume.file_content
+    fill_in "File", with: @resume.file
     fill_in "User", with: @resume.user_id
     click_on "Create Resume"
 
@@ -26,7 +26,7 @@ class ResumesTest < ApplicationSystemTestCase
     visit resumes_url
     click_on "Edit", match: :first
 
-    fill_in "File content", with: @resume.file_content
+    fill_in "File", with: @resume.file
     fill_in "User", with: @resume.user_id
     click_on "Update Resume"
 
