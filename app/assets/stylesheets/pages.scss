@@ -1,3 +1,35 @@
 // Place all the styles related to the StaticPages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.center {
+  margin: 0;
+  position: absolute;
+  text-align: center;
+  top: 45%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.page-header {
+  margin-top: 3%;
+  text-align: center;
+}
+
+.mgTp {
+  margin-top:10%;
+}
+
+.topBtn {
+  margin-top:15px;
+}
+
+.danger {
+  color: red;
+}
+
+.card {
+  background-color: #f1f7ed;
+  margin: 2%;
+}
