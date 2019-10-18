@@ -36,3 +36,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore uploaded files (e.g. resume pdfs)
+/public/uploads/

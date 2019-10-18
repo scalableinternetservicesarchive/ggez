@@ -1,16 +1,16 @@
 class ResumesController < ApplicationController
-  before_action :set_resume, only: [:show, :edit, :update, :destroy]
+  before_action :set_resume, only: %i[show edit update destroy]
+  before_action :check_user, only: %i[show edit update destroy]
 
   # GET /resumes
   # GET /resumes.json
   def index
-    @resumes = Resume.all
+    @resumes = Resume.all.filter { |resume| resume.user_id == current_user.id }
   end
 
   # GET /resumes/1
   # GET /resumes/1.json
-  def show
-  end
+  def show; end
 
   # GET /resumes/new
   def new
@@ -18,31 +18,18 @@ class ResumesController < ApplicationController
   end
 
   # GET /resumes/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /resumes
   # POST /resumes.json
-  # def create
-  #   @resume = Resume.new(resume_params)
-  #
-  #   respond_to do |format|
-  #     if @resume.save
-  #       format.html { redirect_to @resume, notice: 'Resume was successfully created.' }
-  #       format.json { render :show, status: :created, location: @resume }
-  #     else
-  #       format.html { render :new }
-  #       format.json { render json: @resume.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
   def create
     @resume = Resume.new(resume_params)
+    @resume.user_id = current_user.id
 
     if @resume.save
-      redirect_to resumes_path, notice: "The resume for user #{@resume.user_id} has been uploaded."
+      redirect_to resumes_path, notice: "The resume for user #{@resume.user_id} has been created."
     else
-      render 'new'
+      render :new
     end
 
   end
@@ -72,13 +59,20 @@ class ResumesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_resume
-      @resume = Resume.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def resume_params
-      params.require(:resume).permit(:file_content, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_resume
+    @resume = Resume.find(params[:id])
+  end
+
+  def check_user
+    return if logged_in? && @resume.user_id == current_user.id
+
+    redirect_to root_path
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def resume_params
+    params.require(:resume).permit(:file_content, :user_id)
+  end
 end
