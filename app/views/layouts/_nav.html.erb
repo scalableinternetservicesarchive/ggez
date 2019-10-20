@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a href="#" class="navbar-brand">Rezoom!</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav">
+          <%= link_to 'Home', current_user, class: 'nav-item nav-link active' %>
+          <%= link_to 'Resume Management', new_resume_path, class: 'nav-item nav-link active'%>
+          <a href="#" class="nav-item nav-link active">Review Resumes</a>
+        </div>
+        <div class="navbar-nav ml-auto">
+          <%= link_to 'Help', tutorial_path, class: 'nav-item nav-link active' %>
+          <%= link_to 'Account Management', edit_user_path(session[:user_id]), class: 'nav-item nav-link active'%>
+        </div>
+    </div>
+</nav>

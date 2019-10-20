@@ -1,6 +1,7 @@
-<h1>Editing User</h1>
+<%= render 'layouts/nav', user: @user %>
+<h1>Account Management</h1>
 
 <%= render 'form', user: @user %>
 
-<%= link_to 'Show', @user %> |
+<%= link_to 'Back', @user %> |
 <%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
