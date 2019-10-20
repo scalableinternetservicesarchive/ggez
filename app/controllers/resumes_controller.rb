@@ -4,7 +4,7 @@ class ResumesController < ApplicationController
 
   # GET /resumes
   def index
-    @resumes = current_user.resumes
+    @resumes = Resume.all
   end
 
   # GET /resumes/1
