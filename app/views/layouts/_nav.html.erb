@@ -12,7 +12,7 @@
         </div>
         <div class="navbar-nav ml-auto">
           <%= link_to 'Help', tutorial_path, class: 'nav-item nav-link active' %>
-          <%= link_to 'Account Management', edit_user_path(session[:user_id]), class: 'nav-item nav-link active'%>
+          <%= link_to 'Account Management', edit_user_path(current_user), class: 'nav-item nav-link active'%>
         </div>
     </div>
 </nav>
