@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#delete'
   get '/tutorial', to: 'pages#tutorial'
+  
   resources :resumes, except: %i[edit update]
 
   resources :users, except: [:index]
