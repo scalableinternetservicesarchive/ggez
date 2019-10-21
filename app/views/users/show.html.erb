@@ -1,4 +1,8 @@
-<h2>My Account</h2>
+<% if current_user.id == @user.id %>
+  <h1>My Account</h1>
+<% else %>
+  <h1>Account</h1>
+<% end %>
 
 <p id="notice"><%= notice %></p>
 

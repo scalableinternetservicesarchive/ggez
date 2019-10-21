@@ -10,19 +10,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <h1>Rezoom</h1>
-        <% if logged_in? %>
-          <%= link_to 'My Account', current_user %><br/>
-          <%= link_to 'View Resumes', resumes_path %><br/>
-          <%= link_to 'Logout', logout_path, method: :delete %>
-        <% else %>
-          <%= link_to 'Login', login_path %><br/>
-          <%= link_to 'New Account', new_user_path %>
-        <% end %>
-      </div>
-    </nav>
+    <%= render 'layouts/nav' %>
     <div class="container">
       <%= yield %>
     </div>
