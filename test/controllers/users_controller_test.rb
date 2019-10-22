@@ -3,11 +3,13 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
+    log_in_as(@user)
   end
 
-  test "should get index" do
-    get users_url
-    assert_response :success
+  test "should not get index" do
+    assert_raise do
+      get users_url
+    end
   end
 
   test "should get new" do
@@ -16,6 +18,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create user" do
+    @user.resumes.each(&:destroy)
+    @user.destroy
     assert_difference('User.count') do
       post users_url, params: { user: { industry: @user.industry, password: 'secret', password_confirmation: 'secret', username: @user.username } }
     end
@@ -33,7 +37,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update user" do
+  test "should require login to update user" do
     patch user_url(@user), params: { user: { industry: @user.industry, password: 'secret', password_confirmation: 'secret', username: @user.username } }
     assert_redirected_to user_url(@user)
   end
@@ -43,6 +47,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       delete user_url(@user)
     end
 
-    assert_redirected_to users_url
+    assert_redirected_to root_url
   end
 end
