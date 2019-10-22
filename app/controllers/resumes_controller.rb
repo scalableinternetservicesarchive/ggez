@@ -1,10 +1,10 @@
 class ResumesController < ApplicationController
-  before_action :set_resume, only: %i[show edit update destroy]
-  before_action :check_user, only: %i[show edit update destroy]
+  before_action :set_resume, only: %i[show update destroy]
+  before_action :check_user, only: %i[update destroy]
 
   # GET /resumes
   def index
-    @resumes = current_user.resumes
+    @resumes = Resume.all
   end
 
   # GET /resumes/1
@@ -31,7 +31,7 @@ class ResumesController < ApplicationController
   # DELETE /resumes/1
   def destroy
     @resume.destroy
-    redirect_to resumes_url, notice: 'Resume was successfully destroyed.'
+    redirect_to resumes_url, notice: 'Resume was successfully deleted.'
   end
 
   private

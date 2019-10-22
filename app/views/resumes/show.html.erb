@@ -1,4 +1,4 @@
-<%= render 'layouts/nav', user: @user %>
+<h1>Resume</h1>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -8,13 +8,12 @@
 
 <p>
   <strong>Resume Link:</strong>
-  <%= link_to "View Resume", @resume.file_url unless @resume.file.nil? %>
+  <%= link_to "View Resume", @resume.file.url unless @resume.file.nil? %>
 </p>
 
 
 <p>
-  <strong>User:</strong>
-  <%= @resume.user_id %>
+  <strong>User</strong>
+  <%= @resume.user.username %>
 </p>
 
-<%= link_to 'Back', resumes_path %>

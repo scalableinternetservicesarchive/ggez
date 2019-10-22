@@ -1,9 +1,13 @@
-<%= render 'layouts/nav', user: @user %>
+<% if current_user.id == @user.id %>
+  <h1>My Account</h1>
+<% else %>
+  <h1>Account</h1>
+<% end %>
 
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Welcome:</strong>
+  <strong>Username:</strong>
   <%= @user.username %>
 </p>
 
@@ -12,9 +16,9 @@
   <%= @user.industry %>
 </p>
 
-<p>
-  <strong>Resume:</strong>
-  <%=  link_to 'See Resumes', resumes_path  %>
-</p>
+<%= render partial:'resumes/table', locals: { resumes: @user.resumes } %>
 
+<br>
 
+<%= link_to 'Edit Account', edit_user_path(@user) %> |
+<%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>

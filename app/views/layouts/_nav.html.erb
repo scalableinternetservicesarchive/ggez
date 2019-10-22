@@ -1,18 +1,29 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a href="#" class="navbar-brand">Rezoom!</a>
+    <h1 class="navbar-brand">Rezoom!</h1>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
+      <% if logged_in? %>
         <div class="navbar-nav">
-          <%= link_to 'Home', current_user, class: 'nav-item nav-link active' %>
-          <%= link_to 'Resume Management', new_resume_path, class: 'nav-item nav-link active'%>
-          <a href="#" class="nav-item nav-link active">Review Resumes</a>
+          <%= link_to 'My Account', current_user, class: 'nav-item nav-link active'%>
+          <%= link_to 'Add Resume', new_resume_path, class: 'nav-item nav-link active'%>
+          <%= link_to 'Review Resumes', resumes_path, class: 'nav-item nav-link active'%>
         </div>
         <div class="navbar-nav ml-auto">
           <%= link_to 'Help', tutorial_path, class: 'nav-item nav-link active' %>
-          <%= link_to 'Account Management', edit_user_path(current_user), class: 'nav-item nav-link active'%>
+          <%= link_to 'Logout', logout_path, method: :delete, class: 'nav-item nav-link active'%>
         </div>
+      <% else %>
+        <div class="navbar-nav">
+          <%= link_to 'Home', root_path, class: 'nav-item nav-link active'%>
+        </div>
+        <div class="navbar-nav ml-auto">
+          <%= link_to 'Help', tutorial_path, class: 'nav-item nav-link active'%>
+          <%= link_to 'Create Account', new_user_path, class: 'nav-item nav-link active' %>
+          <%= link_to 'Login', login_path, class: 'nav-item nav-link active'%>
+        </div>
+      <% end %>
     </div>
 </nav>
