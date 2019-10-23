@@ -1,0 +1,33 @@
+<div class="card my-4">
+  <h5 class="card-header">Create a Review</h5>
+  <div class="card-body">
+    <%= form_with(model: review, local: true) do |form| %>
+      <div class="form-group">
+        <% if review.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(review.errors.count, "error") %> prohibited this review from being saved:</h2>
+            <ul>
+              <% review.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div hidden class="field">
+          <%= form.label :resume %>
+          <%= form.number_field :resume_id, value: resume.id %>
+        </div>
+        <div class="field">
+          <%= form.number_field :rating, value: '5', pattern: '[0-5]' %>
+          <span class="fa fa-star star-checked"></span>
+        </div>
+        <div class="field">
+          <%= form.text_area :content, class: 'form-control', rows: '4'%>
+        </div>
+      </div>
+        <div >
+          <%= form.submit class: 'btn btn-primary' %>
+        </div>
+    <% end %>
+  </div>
+</div>

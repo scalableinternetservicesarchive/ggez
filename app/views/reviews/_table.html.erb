@@ -1,0 +1,20 @@
+<% reviews.each do |review| %>
+  <div class="card my-4">
+    <h5 class="card-header">
+      <% review.rating.times do  %>
+        <span class="fa fa-star star-checked"></span>
+      <% end %>
+      <% (5 - review.rating).times do  %>
+        <span class="fa fa-star"></span>
+      <% end %>
+      <%= link_to review.user.username, review.user  %>
+      <% if review.user_id == current_user.id %>
+        <%= link_to '&times'.html_safe, review, method: :delete, data: { confirm: 'Are you sure?' }, style: "color:red", class: 'close' %>
+      <% end %>
+    </h5>
+    <div class="card-body">
+        <%= review.content %>
+    </div>
+  </div>
+<% end %>
+

@@ -2,18 +2,24 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>File path:</strong>
-  <%= @resume.file.path %>
-</p>
-
-<p>
-  <strong>Resume Link:</strong>
-  <%= link_to "View Resume", @resume.file.url unless @resume.file.nil? %>
-</p>
-
-
-<p>
   <strong>User</strong>
   <%= @resume.user.username %>
 </p>
+
+<p>
+  <strong>Industry</strong>
+  <%= @resume.user.industry %>
+</p>
+
+<embed src=<%= @resume.file.url %> type="application/pdf" width="100%" height="600px" />
+
+<br>
+<br>
+
+<%= render partial: 'reviews/form', locals: { review: Review.new, resume: @resume }%>
+
+<br>
+<br>
+
+<%= render partial: 'reviews/table', locals: { reviews: @resume.reviews.reverse } %>
 
