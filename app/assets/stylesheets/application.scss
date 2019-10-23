@@ -15,6 +15,13 @@
  */
 @import "bootstrap";
 
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
 body {
     background-color: #F1F7ED;
+}
+
+.star-checked {
+  color: orange;
 }

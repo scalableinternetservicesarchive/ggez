@@ -14,6 +14,7 @@ gem 'sass-rails', '~> 5'
 # Use bootstrap library for CSS
 gem 'bootstrap', '~> 4.0'
 gem 'bootstrap-sass'
+gem 'font-awesome-sass', '~> 5.11.2'
 # Use sprockets to get bootstrap working
 gem 'sprockets-rails', '~> 3.1', '>= 3.1.1'
 # Ue JQuery
