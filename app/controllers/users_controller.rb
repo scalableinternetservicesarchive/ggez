@@ -37,6 +37,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
+    @user.resumes.each(&:destroy)
     @user.destroy
     log_out
     redirect_to root_path, notice: 'Account was successfully deleted.'
