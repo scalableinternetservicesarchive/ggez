@@ -2,17 +2,9 @@ require 'test_helper'
 
 class ReviewsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one)
+    log_in_as(@user)
     @review = reviews(:one)
-  end
-
-  test "should get index" do
-    get reviews_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_review_url
-    assert_response :success
   end
 
   test "should create review" do
@@ -20,22 +12,12 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
       post reviews_url, params: { review: { content: @review.content, rating: @review.rating, resume_id: @review.resume_id, user_id: @review.user_id } }
     end
 
-    assert_redirected_to review_url(Review.last)
-  end
-
-  test "should show review" do
-    get review_url(@review)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_review_url(@review)
-    assert_response :success
+    assert_redirected_to @review.resume
   end
 
   test "should update review" do
     patch review_url(@review), params: { review: { content: @review.content, rating: @review.rating, resume_id: @review.resume_id, user_id: @review.user_id } }
-    assert_redirected_to review_url(@review)
+    assert_redirected_to @review.resume
   end
 
   test "should destroy review" do
@@ -43,6 +25,6 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
       delete review_url(@review)
     end
 
-    assert_redirected_to reviews_url
+    assert_redirected_to @review.resume
   end
 end

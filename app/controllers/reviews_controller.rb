@@ -19,13 +19,9 @@ class ReviewsController < ApplicationController
   def update
     if @review.update(review_params)
       redirect_to @review.resume, notice: 'Review was successfully updated.'
-    # elsif @review.nil? || @review.resume.nil?
-    #   redirect_to root_path, notice: 'Review was not successfully updated.'
-    # else
-    #   redirect_to @review.resume, notice: 'Review was not successfully updated.'
+    else
+      redirect_to @review.resume, notice: 'Review was not successfully updated.'
     end
-    redirect_to root_path, notice: 'Review was not successfully updated.'
-
   end
 
   # DELETE /reviews/1
