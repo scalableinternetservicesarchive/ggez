@@ -16,10 +16,11 @@
 <br>
 <br>
 
-<%= render partial: 'reviews/form', locals: { review: Review.new, resume: @resume }%>
-
-<br>
-<br>
+<% if logged_in? %>
+  <%= render partial: 'reviews/form', locals: { review: Review.new, resume: @resume }%>
+  <br>
+  <br>
+<% end %>
 
 <%= render partial: 'reviews/table', locals: { reviews: @resume.reviews.reverse } %>
 
