@@ -8,7 +8,7 @@
         <span class="fa fa-star"></span>
       <% end %>
       <%= link_to review.user.username, review.user  %>
-      <% if review.user_id == current_user.id %>
+      <% if logged_in? && review.user_id == current_user.id %>
         <%= link_to '&times'.html_safe, review, method: :delete, data: { confirm: 'Are you sure?' }, style: "color:red", class: 'close' %>
       <% end %>
     </h5>
