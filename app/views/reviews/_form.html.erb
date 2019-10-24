@@ -1,3 +1,21 @@
+<script>
+    function fillStars(num){
+        const ratingField = document.getElementById("rating-field");
+        if (ratingField.value === num.toString()) {
+            num = 0;
+        }
+        for (let i = 1; i <= 5; i++){
+            const star = document.getElementById("star"+i);
+            if (i <= num) {
+                star.className="fa fa-star star-checked";
+            } else {
+                star.className="fa fa-star";
+            }
+        }
+        ratingField.value = num.toString();
+    }
+</script>
+
 <div class="card my-4">
   <h5 class="card-header">Create a Review</h5>
   <div class="card-body">
@@ -13,21 +31,29 @@
             </ul>
           </div>
         <% end %>
+
         <div hidden class="field">
           <%= form.label :resume %>
           <%= form.number_field :resume_id, value: resume.id %>
         </div>
-        <div class="field">
-          <%= form.number_field :rating, value: '5', pattern: '[0-5]' %>
-          <span class="fa fa-star star-checked"></span>
+        <div hidden class="field">
+          <%= form.number_field :rating, value: '0', id: "rating-field" %>
         </div>
+
+        <div class="field no-selection">
+          <% (1..5).each do |index| %>
+            <h2 class="fa fa-star" style="cursor:pointer;" id=<%= "star#{index}" %> onclick=<%= "fillStars(#{index})" %>></h2>
+          <% end %>
+        </div>
+
         <div class="field">
           <%= form.text_area :content, class: 'form-control', rows: '4'%>
         </div>
-      </div>
         <div >
           <%= form.submit class: 'btn btn-primary' %>
         </div>
+      </div>
     <% end %>
   </div>
 </div>
+
