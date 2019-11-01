@@ -5,6 +5,6 @@ if Rails.env.production?
         use_iam_profile: true,
         region: 'us-west-2'
       }
-      config.fog_directory  = ENV['fog_directory']   
+      config.fog_directory  = 'ggez-resumes'
     end
 end
