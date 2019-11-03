@@ -1,0 +1,30 @@
+<table>
+  <thead>
+  <tr>
+    <th>Resume</th>
+    <th>Public</th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% resumes.each do |resume| %>
+    <tr>
+      <td><%= link_to resume.file, resume %></td>
+      <td>
+        <% if resume.public %>
+          Yes <%= link_to 'Hide', {controller: :resumes, action: :swap_public, id: resume.id}, method: :post %>
+        <% else %>
+          No <%= link_to 'Make Public', {controller: :resumes, action: :swap_public, id: resume.id}, method: :post %>
+        <% end %>
+        </td>
+      <td><%= link_to 'Delete', resume, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+    <tr>
+      <td>
+        <%= link_to 'Add Resume', new_resume_path %>
+      </td>
+    </tr>
+  </tbody>
+</table>
