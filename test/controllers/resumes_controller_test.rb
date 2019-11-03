@@ -7,11 +7,6 @@ class ResumesControllerTest < ActionDispatch::IntegrationTest
     @resume = resumes(:one)
   end
 
-  test "should get index" do
-    get resumes_url
-    assert_response :success
-  end
-
   test "should get new" do
     get new_resume_url
     assert_response :success
