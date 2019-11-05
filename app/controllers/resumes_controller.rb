@@ -1,12 +1,6 @@
 class ResumesController < ApplicationController
-  before_action :set_resume, only: %i[show update destroy]
-  before_action :check_user, only: %i[update destroy]
-
-  # GET /resumes
-  def index
-    @resumes = Resume.all
-  end
-
+  before_action :set_resume, only: %i[show destroy swap_public]
+  before_action :check_user, only: %i[show destroy swap_public]
   # GET /resumes/1
   def show; end
 
@@ -21,7 +15,7 @@ class ResumesController < ApplicationController
     @resume.user_id = current_user.id
 
     if @resume.save
-      redirect_to resumes_path, notice: "The resume for user #{@resume.user_id} has been created."
+      redirect_to root_path, notice: "The resume for user #{@resume.user_id} has been created."
     else
       render :new
     end
@@ -32,6 +26,30 @@ class ResumesController < ApplicationController
   def destroy
     @resume.destroy
     redirect_to resumes_url, notice: 'Resume was successfully deleted.'
+  end
+
+  def swap_public
+    @resume.public = !@resume.public
+    @resume.save
+    redirect_to root_path
+  end
+
+  def random
+    unless logged_in?
+      redirect_to root_path
+      return
+    end
+
+    resumes = Resume.where(public: true).where.not(user_id: current_user.id).all
+    resumes = resumes.select {|resume| resume.user.industry == current_user.industry}
+    if resumes.length == 0
+      puts 'No valid resumes'
+      redirect_to root_path
+      return
+    end
+
+    @resume = resumes.sample
+    render :show
   end
 
   private

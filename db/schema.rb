@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_22_202416) do
+ActiveRecord::Schema.define(version: 2019_11_02_233918) do
 
   create_table "resumes", force: :cascade do |t|
     t.text "file"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "public", default: false
     t.index ["user_id"], name: "index_resumes_on_user_id"
   end
 

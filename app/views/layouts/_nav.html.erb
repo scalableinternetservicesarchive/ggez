@@ -6,7 +6,7 @@
         <div class="navbar-nav">
           <%= link_to 'My Account', current_user, class: 'nav-item nav-link active'%>
           <%= link_to 'Add Resume', new_resume_path, class: 'nav-item nav-link active'%>
-          <%= link_to 'Review Resumes', resumes_path, class: 'nav-item nav-link active'%>
+          <%= link_to 'Review A Resume', random_resume_path, method: 'post', class: 'nav-item nav-link active'%>
         </div>
         <div class="navbar-nav ml-auto">
           <%= link_to 'Help', tutorial_path, class: 'nav-item nav-link active' %>
