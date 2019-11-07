@@ -54,6 +54,7 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # For cloud9
+  config.hosts << "efabfb773b2543af9bb79c2d03e8de5d.vfs.cloud9.us-east-2.amazonaws.com"
   config.hosts << "d2b87fe872624c83948554140c031181.vfs.cloud9.us-east-2.amazonaws.com"
 
   # Raises error for missing translations.
