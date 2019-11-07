@@ -1,3 +1,7 @@
+<% flash.each do |key, value| %>
+  <p class="alert"><%= value %></p>
+<% end %>
+
 <% if current_user.id == @user.id %>
   <h1>My Account</h1>
 <% else %>
