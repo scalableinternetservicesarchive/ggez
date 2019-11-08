@@ -8,6 +8,8 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     @review.user_id = current_user.id
     if @review.save
+      @review.resume.user.update(points: @review.resume.user.points - 1)
+      current_user.update(points: current_user.points + 1)
       redirect_to @review.resume, notice: 'Review was successfully created.'
     else
       redirect_to @review.resume, notice: 'Review was not successfully created.'

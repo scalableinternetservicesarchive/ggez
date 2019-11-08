@@ -41,6 +41,7 @@ class ResumesController < ApplicationController
     end
 
     resumes = Resume.where(public: true).where.not(user_id: current_user.id).all
+    resumes = resumes.select {|resume| resume.user.points > 0}
     resumes = resumes.select {|resume| resume.user.industry == current_user.industry}
     if resumes.length == 0
       flash[:error] = "No valid resumes"
