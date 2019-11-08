@@ -1,5 +1,5 @@
-<% flash.each do |key, value| %>
-  <p class="alert"><%= value %></p>
+<% if flash[:error] %>
+  <p class="alert"><%= flash[:error] %></p>
 <% end %>
 
 <% if current_user.id == @user.id %>
