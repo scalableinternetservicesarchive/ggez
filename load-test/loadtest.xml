@@ -1,0 +1,140 @@
+<!DOCTYPE tsung SYSTEM "/usr/local/Cellar/tsung/1.7.0/share/tsung/tsung-1.0.dtd">
+<tsung version="1.0">
+	<clients>
+		<client host="localhost" use_controller_vm="true" maxusers="15000"/>
+	</clients>
+	<servers>
+		<server host="FILL_IN" port="80" type="tcp"/>
+	</servers>
+	<load>
+		<arrivalphase phase="1" duration="30" unit="second">
+			<users arrivalrate="1" unit="second"/>
+		</arrivalphase>
+		<arrivalphase phase="2" duration="30" unit="second">
+			<users arrivalrate="2" unit="second"/>
+		</arrivalphase>
+		<arrivalphase phase="3" duration="30" unit="second">
+			<users arrivalrate="4" unit="second"/>
+		</arrivalphase>
+		<arrivalphase phase="4" duration="30" unit="second">
+			<users arrivalrate="8" unit="second"/>
+		</arrivalphase>
+	</load>
+	<options>
+		<option name="glocal_ack_timeout" value="2000"/>
+		<option type="ts_http" name="user_agent">
+			<user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+		</option>
+	</options>
+	<sessions>
+		<session name='main-session' probability='100'  type='ts_http'>
+			
+			<request>
+				<http url='/' />
+			</request>
+			<thinktime random='true' value='1'/>
+			
+			<request>
+				<http url='/tutorial' />
+			</request>
+			<thinktime random='true' value='1'/>
+			
+			<request>
+				<dyn_variable name="authenticity_token" />
+				<http url='/users/new' />
+			</request>
+			<setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+			<thinktime random='true' value='1'/>
+			
+			<setdynvars sourcetype="random_number" start="1000"
+				end="9999999">
+				<var name="user_name" />
+			</setdynvars>
+			<request subst="true">
+				<dyn_variable name="created_user_url" re="[Ll]ocation: (http://.*)\r"/>
+				<dyn_variable name="created_user_id" re="[Ll]ocation: http://.*/users/(.*)\r"/>
+				<http url='/users' contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Busername%5D=%%_user_name%%&amp;user%5Bindustry%5D=hmm&amp;user%5Bpassword%5D=a&amp;user%5Bpassword_confirmation%5D=a&amp;commit=Create+User' content_type='application/x-www-form-urlencoded' method='POST' />
+			</request>
+			
+			<request subst="true">
+				<http url='%%_created_user_url%%'>
+				</http>
+			</request>
+			<thinktime random='true' value='1'/>
+			
+			<request subst="true">
+				<dyn_variable name="authenticity_token" />
+				<http url='/users/%%_created_user_id%%/edit'>
+				</http>
+			</request>
+			<setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+			<thinktime random='true' value='1'/>
+			
+			<request subst="true">
+				<http url='/users/%%_created_user_id%%' contents='_method=patch&amp;authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Busername%5D=%%_user_name%%&amp;user%5Bindustry%5D=CS&amp;user%5Bpassword%5D=&amp;user%5Bpassword_confirmation%5D=&amp;commit=Update+User' content_type='application/x-www-form-urlencoded' method='POST' />
+			</request>
+			
+			<request subst="true">
+				<dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+				<http url='/users/%%_created_user_id%%' />
+			</request>
+			<setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+			<thinktime random='true' value='1'/>
+			
+			<request subst="true">
+				<http url='/resume/random' contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%' content_type='application/x-www-form-urlencoded' method='POST' />
+			</request>
+			
+			<request subst="true">
+				<dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content" />
+				<http url='/users/%%_created_user_id%%' />
+			</request>
+			<setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+			<thinktime random='true' value='1'/>
+			
+			<request subst="true">
+				<dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content" />
+				<http url='/users/%%_created_user_id%%/edit' />
+			</request>
+			<setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+			<thinktime random='true' value='1'/>
+			
+			<request subst="true">
+				<http url='/users/%%_created_user_id%%' contents='_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%' content_type='application/x-www-form-urlencoded' method='POST' />
+			</request>
+			
+		</session>
+	</sessions>
+</tsung>
+<!--
+<setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+ok end.">
+	<var name="dump" />
+</setdynvars>
+-->
