@@ -43,6 +43,7 @@ class ResumesController < ApplicationController
     resumes = Resume.where(public: true).where.not(user_id: current_user.id).all
     resumes = resumes.select {|resume| resume.user.points > 0}
     resumes = resumes.select {|resume| resume.user.industry == current_user.industry}
+    resumes = resumes.select {|resume| resume.reviews.none? {|review| review.user_id == current_user.id }}
     if resumes.length == 0
       flash[:error] = "No valid resumes"
       redirect_to root_path
@@ -50,6 +51,7 @@ class ResumesController < ApplicationController
     end
 
     @resume = resumes.sample
+    
     render :show
   end
 
