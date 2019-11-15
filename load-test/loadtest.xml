@@ -34,17 +34,19 @@
 	</options>
 	<sessions>
 		<session name='main-session' probability='100'  type='ts_http'>
-			
+			<!-- Get main page -->
 			<request>
 				<http url='/' />
 			</request>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Get tutorial page -->
 			<request>
 				<http url='/tutorial' />
 			</request>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Open new user form -->
 			<request>
 				<dyn_variable name="authenticity_token" />
 				<http url='/users/new' />
@@ -56,7 +58,8 @@
 				<var name="encoded_authenticity_token" />
 			</setdynvars>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Submit new user form -->
 			<setdynvars sourcetype="random_number" start="1000"
 				end="9999999">
 				<var name="user_name" />
@@ -66,13 +69,15 @@
 				<dyn_variable name="created_user_id" re="[Ll]ocation: http://.*/users/(.*)\r"/>
 				<http url='/users' contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Busername%5D=%%_user_name%%&amp;user%5Bindustry%5D=hmm&amp;user%5Bpassword%5D=a&amp;user%5Bpassword_confirmation%5D=a&amp;commit=Create+User' content_type='application/x-www-form-urlencoded' method='POST' />
 			</request>
-			
+
+			<!-- Go (redirected) to account page -->
 			<request subst="true">
 				<http url='%%_created_user_url%%'>
 				</http>
 			</request>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Go to edit account page -->
 			<request subst="true">
 				<dyn_variable name="authenticity_token" />
 				<http url='/users/%%_created_user_id%%/edit'>
@@ -85,11 +90,13 @@
 				<var name="encoded_authenticity_token" />
 			</setdynvars>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Submit edited account -->
 			<request subst="true">
 				<http url='/users/%%_created_user_id%%' contents='_method=patch&amp;authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Busername%5D=%%_user_name%%&amp;user%5Bindustry%5D=CS&amp;user%5Bpassword%5D=&amp;user%5Bpassword_confirmation%5D=&amp;commit=Update+User' content_type='application/x-www-form-urlencoded' method='POST' />
 			</request>
-			
+
+			<!-- Go (redirected) to account page -->
 			<request subst="true">
 				<dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
 				<http url='/users/%%_created_user_id%%' />
@@ -101,11 +108,29 @@
 				<var name="encoded_authenticity_token" />
 			</setdynvars>
 			<thinktime random='true' value='1'/>
-			
-			<request subst="true">
-				<http url='/resume/random' contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%' content_type='application/x-www-form-urlencoded' method='POST' />
-			</request>
-			
+
+			<!-- Upload resume -->
+			<!-- TODO -->
+
+			<!-- Review 5 resumes -->
+			<for from="1" to="5" var="counter">
+				<!-- Get random resume -->
+				<request subst="true">
+					<http url='/resume/random' contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%' content_type='application/x-www-form-urlencoded' method='POST' />
+				</request>
+				<thinktime random="true" value="1" />
+
+				<!-- Submit review -->
+				<!-- TODO -->
+			</for>
+
+			<!-- Give time for reviews -->
+			<thinktime random="true" value="5" />
+
+			<!-- Check reviews on my resume -->
+			<!-- TODO -->
+
+			<!-- Go back to account page -->
 			<request subst="true">
 				<dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content" />
 				<http url='/users/%%_created_user_id%%' />
@@ -117,7 +142,8 @@
 				<var name="encoded_authenticity_token" />
 			</setdynvars>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Go to edit account page -->
 			<request subst="true">
 				<dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content" />
 				<http url='/users/%%_created_user_id%%/edit' />
@@ -129,7 +155,8 @@
 				<var name="encoded_authenticity_token" />
 			</setdynvars>
 			<thinktime random='true' value='1'/>
-			
+
+			<!-- Delete account -->
 			<request subst="true">
 				<http url='/users/%%_created_user_id%%' contents='_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%' content_type='application/x-www-form-urlencoded' method='POST' />
 			</request>
