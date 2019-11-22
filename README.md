@@ -7,7 +7,7 @@
 | Christopher Aziz | caziz           | caziz@ucla.edu            | [christopheraziz] |
 | Derek Chu        | Derek-Chu       | derekchu53789@gmail.com   | [derekchu]        |
 | Deven Patel      | DevenVimalPatel | Devenvimalpatel@gmail.com | [devenpatel]      |
-| Aidan Wolk       | awolk           | awolk@ucla.edu            | [aidanwolk]       |
+| Aidan Wolk       | awolk           | aidanwolk@g.ucla.edu      | [aidanwolk]       |
 
 ## Section
 
