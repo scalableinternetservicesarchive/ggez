@@ -2,11 +2,14 @@ class ResumesController < ApplicationController
   before_action :set_resume, only: %i[show destroy swap_public]
   before_action :check_user, only: %i[show destroy swap_public]
   # GET /resumes/1
-  def show; end
+  def show
+    fresh_when(@resume)
+  end
 
   # GET /resumes/new
   def new
     @resume = Resume.new
+    fresh_when(@resume)
   end
 
   # POST /resumes
