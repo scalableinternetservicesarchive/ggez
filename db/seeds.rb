@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+example_user = User.create!(
+    username: 'example', industry: 'CS',
+    password: 'a', password_confirmation: 'a',
+    points: 1_000_000_000
+)
+
+example_resume = Resume.create!(
+    user_id: example_user.id,
+    public: true,
+    file: Rails.root.join("app/assets/images/dummy.pdf").open
+)
