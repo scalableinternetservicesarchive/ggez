@@ -181,13 +181,20 @@
           <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
           <http url='/users/%%_created_user_id%%'/>
         </request>
+        <thinktime random='true' value='1'/>
+
+        <!-- Check reviews on my resume -->
+        <request subst="true">
+          <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+          <http url="/resumes/%%_resume_id%%"/>
+        </request>
         <setdynvars sourcetype="eval"
                     code="fun({Pid,DynVars})->
 				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
 				http_uri:encode(Val) end.">
           <var name="encoded_authenticity_token"/>
         </setdynvars>
-        <thinktime random='true' value='1'/>
+        <thinktime random="true" value="1" />
       </for>
 
       <!-- Give time for reviews -->
