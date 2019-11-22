@@ -1,5 +1,4 @@
 <% reviews.each do |review| %>
-  <% cache(review) do %>
   <div class="card my-4">
     <h5 class="card-header">
       <span class="no-selection">
@@ -19,6 +18,5 @@
         <%= review.content %>
     </div>
   </div>
-  <% end %>
 <% end %>
 

@@ -1,7 +1,6 @@
 <h1>Resume</h1>
 <p id="notice"><%= notice %></p>
 
-<% cache(@resume) do %>
 <p>
   <strong>User</strong>
   <%= @resume.user.username %>
@@ -24,4 +23,4 @@
 <% end %>
 
 <%= render partial: 'reviews/table', locals: { reviews: @resume.reviews.reverse } %>
-<% end %>
+
