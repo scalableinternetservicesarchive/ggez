@@ -40,18 +40,25 @@ class ResumesController < ApplicationController
       return
     end
 
-    resumes = Resume.where(public: true).where.not(user_id: current_user.id).all
-    resumes = resumes.select {|resume| resume.user.points > 0}
-    resumes = resumes.select {|resume| resume.user.industry == current_user.industry}
-    resumes = resumes.select {|resume| resume.reviews.none? {|review| review.user_id == current_user.id }}
-    if resumes.length == 0
-      flash[:error] = "No valid resumes"
+    # To keep load testing simple and consistent,
+    # we won't worry about this condition:
+    # Resume.joins(:user, :reviews)
+    # .where.not(reviews: { user_id: current_user.id })
+    resume = Resume.joins(:user)
+                   .where(public: true)
+                   .where.not(user_id: current_user.id)
+                   .where.not(users: { points: 0 })
+                   .where(users: { industry: current_user.industry })
+                   .sample
+
+    if resume.nil?
+      flash[:error] = 'No valid resumes'
       redirect_to root_path
       return
     end
 
-    @resume = resumes.sample
-    
+    @resume = resume
+
     render :show
   end
 
