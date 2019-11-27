@@ -7,23 +7,35 @@
     <server host="FILL_IN" port="80" type="tcp"/>
   </servers>
   <load>
-    <arrivalphase phase="1" duration="50" unit="second">
+    <arrivalphase phase="1" duration="100" unit="second">
+      <users arrivalrate="0.5" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="100" unit="second">
       <users arrivalrate="1" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="2" duration="50" unit="second">
+    <arrivalphase phase="3" duration="100" unit="second">
+      <users arrivalrate="1.5" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="4" duration="100" unit="second">
       <users arrivalrate="2" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="3" duration="50" unit="second">
+    <arrivalphase phase="5" duration="100" unit="second">
       <users arrivalrate="3" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="4" duration="50" unit="second">
+    <arrivalphase phase="6" duration="100" unit="second">
       <users arrivalrate="4" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="5" duration="50" unit="second">
-      <users arrivalrate="5" unit="second"/>
-    </arrivalphase>
-    <arrivalphase phase="6" duration="50" unit="second">
+    <arrivalphase phase="7" duration="100" unit="second">
       <users arrivalrate="6" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="8" duration="100" unit="second">
+      <users arrivalrate="8" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="9" duration="100" unit="second">
+      <users arrivalrate="12" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="10" duration="100" unit="second">
+      <users arrivalrate="16" unit="second"/>
     </arrivalphase>
   </load>
   <options>
@@ -35,7 +47,156 @@
     </option>
   </options>
   <sessions>
-    <session name='main-session' probability='100' type='ts_http'>
+    <session name="just-checking" type="ts_http" probability="10">
+      <!-- Get main page -->
+      <request>
+        <http url='/'/>
+      </request>
+      <thinktime random='true' value='1'/>
+
+      <!-- Get tutorial page -->
+      <request>
+        <http url='/tutorial'/>
+      </request>
+      <thinktime random='true' value='1'/>
+    </session>
+
+    <session name="selfish-user" type="ts_http" probability="20">
+      <!-- Get main page -->
+      <request>
+        <http url='/'/>
+      </request>
+      <thinktime random='true' value='1'/>
+
+      <!-- Get tutorial page -->
+      <request>
+        <http url='/tutorial'/>
+      </request>
+      <thinktime random='true' value='1'/>
+
+      <!-- Open new user form -->
+      <request>
+        <dyn_variable name="authenticity_token"/>
+        <http url='/users/new'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+      <!-- Submit new user form -->
+      <setdynvars sourcetype="random_number" start="1000"
+                  end="9999999">
+        <var name="user_name"/>
+      </setdynvars>
+      <request subst="true">
+        <dyn_variable name="created_user_url" re="[Ll]ocation: (http://.*)\r"/>
+        <dyn_variable name="created_user_id" re="[Ll]ocation: http://.*/users/(.*)\r"/>
+        <http url='/users'
+              contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Busername%5D=%%_user_name%%&amp;user%5Bindustry%5D=CS&amp;user%5Bpassword%5D=a&amp;user%5Bpassword_confirmation%5D=a&amp;commit=Create+User'
+              content_type='application/x-www-form-urlencoded' method='POST'/>
+      </request>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <http url='%%_created_user_url%%'>
+        </http>
+      </request>
+      <thinktime random='true' value='1'/>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+      <!-- Go to resume upload page -->
+      <request>
+        <dyn_variable name="authenticity_token"/>
+        <http url='/resumes/new'/>
+      </request>
+      <thinktime random='true' value='1'/>
+
+      <!-- Upload resume -->
+      <request subst="all_except_body">
+        <http url='/resumes'
+              contents_from_file="./upload_request.bin"
+              content_type='multipart/form-data; boundary=---------------------------507425973650765974289510847'
+              method='POST'>
+          <http_header name="X-CSRF-Token" value="%%_authenticity_token%%"/>
+          <http_header name='Accept' value='text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'/>
+          <http_header name='Accept-Encoding' value='gzip, deflate'/>
+          <http_header name='Accept-Language' value='en-US,en;q=0.5'/>
+        </http>
+      </request>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <dyn_variable name="resume_id" re="/resumes/(\d+)"/>
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+      <!-- Check reviews on my resume -->
+      <for from="1" to="5" var="counter">
+        <request subst="true">
+          <http url="/resumes/%%_resume_id%%"/>
+        </request>
+        <thinktime random="true" value="1"/>
+      </for>
+
+      <!-- Go back to account page -->
+      <request subst="true">
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+      <!-- Go to edit account page -->
+      <request subst="true">
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%/edit'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+      <!-- Delete account -->
+      <request subst="true">
+        <http url='/users/%%_created_user_id%%'
+              contents='_method=delete&amp;authenticity_token=%%_encoded_authenticity_token%%'
+              content_type='application/x-www-form-urlencoded' method='POST'/>
+      </request>
+    </session>
+
+    <session name='full-session' probability='70' type='ts_http'>
       <!-- Get main page -->
       <request>
         <http url='/'/>
@@ -204,6 +365,7 @@
       <request subst="true">
         <http url="/resumes/%%_resume_id%%"/>
       </request>
+      <thinktime random="true" value="1"/>
 
       <!-- Go back to account page -->
       <request subst="true">
