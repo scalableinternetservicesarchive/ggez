@@ -9,7 +9,7 @@
 # Create CS user for general load testing
 
 example_cs_user = User.create!(
-  username: 'example',
+  username: 'sample_user_cs',
   industry: 'CS',
   password: 'a',
   password_confirmation: 'a',
@@ -25,7 +25,7 @@ Resume.create!(
 # Create a Finance user which will have lots of reviews
 
 example_finance_user = User.create!(
-  username: 'example',
+  username: 'sample_user_finance',
   industry: 'finance',
   password: 'a',
   password_confirmation: 'a',
@@ -38,23 +38,43 @@ example_finance_resume = Resume.create!(
   file: Rails.root.join('app/assets/images/dummy.pdf').open
 )
 
-# Create lots more users and reviews
-100.times do |n|
-  new_user = User.create!(
-    username: "sample_user_#{n}",
-    industry: 'finance',
-    password: 'a',
-    password_confirmation: 'a',
-    points: 5
-  )
-  comments = ['I like this resume. Good work!',
+
+
+count = 100_000
+review_count = 20
+
+user_sql = 'INSERT INTO users '\
+      '(username, industry, password_digest, points, created_at, updated_at)'\
+      ' VALUES '
+resume_sql = 'INSERT INTO resumes '\
+             '(file, user_id, created_at, updated_at, public)'\
+             ' VALUES '
+
+review_sql = 'INSERT INTO reviews '\
+             '(rating, content, user_id, resume_id, created_at, updated_at)'\
+             ' VALUES '
+
+
+(1..count).each do |n|
+  delim = n == count - 1 ? ';' : ','
+
+  user_sql << "('sample_user_finance_#{n}', 'finance', 'fake_digest', 5, 0, 0)" << delim
+
+  resume_sql << "('dummy.pdf', #{n}, 0, 0, 1)" << delim
+
+  contents = ['I like this resume. Good work!',
               'This resume is perfect!!!',
               'Bad resume.',
               'Needs some work']
-  Review.create!(
-    rating: rand(0..5),
-    content: comments.sample,
-    user: new_user,
-    resume: example_finance_resume
-  )
+  ratings = (0...5).to_a
+
+  5.times do
+    review_sql << "(#{ratings.sample}, '#{contents.sample}', #{n}, #{n}, 0, 0),"
+  end
+  review_sql << "(#{ratings.sample}, '#{contents.sample}', #{n}, #{n}, 0, 0)" << delim
 end
+
+
+ActiveRecord::Base.connection.execute(user_sql)
+ActiveRecord::Base.connection.execute(resume_sql)
+ActiveRecord::Base.connection.execute(review_sql)
