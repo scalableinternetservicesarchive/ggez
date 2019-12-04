@@ -91,6 +91,9 @@ GEM
     childprocess (3.0.0)
     concurrent-ruby (1.1.5)
     crass (1.0.5)
+    dalli (2.7.10)
+    dalli-elasticache (0.2.0)
+      dalli (>= 1.0.0)
     erubi (1.9.0)
     excon (0.68.0)
     execjs (2.7.0)
@@ -270,6 +273,7 @@ DEPENDENCIES
   byebug
   capybara (>= 2.15)
   carrierwave (~> 2.0)
+  dalli-elasticache
   fog-aws
   font-awesome-sass (~> 5.11.2)
   jbuilder (~> 2.7)
