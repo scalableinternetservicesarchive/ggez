@@ -23,7 +23,7 @@ review_sql = 'INSERT INTO reviews '\
 (1..count).each do |n|
   delim = n == count - 1 ? ';' : ','
 
-  user_sql << "('sample_user_finance_#{n}', 'finance', 'fake_digest', 5, 0, 0)" << delim
+  user_sql << "('sample_user_cs_#{n}', 'CS', 'fake_digest', 5, 0, 0)" << delim
 
   resume_sql << "('dummy.pdf', #{n}, 0, 0, 1)" << delim
 
