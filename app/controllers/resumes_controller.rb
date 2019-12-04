@@ -40,15 +40,12 @@ class ResumesController < ApplicationController
       return
     end
 
-
-    user_reviews = Review.where(user_id: current_user.id)
-
     resumes = Resume.joins(:user, :reviews)
                     .where(public: true)
                     .where.not(user_id: current_user.id)
                     .where.not(users: { points: 0 })
                     .where(users: { industry: current_user.industry })
-                    .where.not(reviews: user_reviews)
+                    .where.not(reviews: current_user.reviews)
 
     resume = resumes.limit(1).offset(rand(resumes.count)).first
 
