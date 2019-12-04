@@ -19,6 +19,12 @@ review_sql = 'INSERT INTO reviews '\
              '(rating, content, user_id, resume_id, created_at, updated_at)'\
              ' VALUES '
 
+contents = ['I like this resume. Good work!',
+            'This resume is perfect!!!',
+            'Bad resume.',
+            'Needs some work']
+ratings = (0...5).to_a
+ids = (1..(count - 1)).to_a
 
 (1..count).each do |n|
   delim = n == count - 1 ? ';' : ','
@@ -27,16 +33,10 @@ review_sql = 'INSERT INTO reviews '\
 
   resume_sql << "('dummy.pdf', #{n}, 0, 0, 1)" << delim
 
-  contents = ['I like this resume. Good work!',
-              'This resume is perfect!!!',
-              'Bad resume.',
-              'Needs some work']
-  ratings = (0...5).to_a
-
   (review_count - 1).times do
-    review_sql << "(#{ratings.sample}, '#{contents.sample}', #{n}, #{n}, 0, 0),"
+    review_sql << "(#{ratings.sample}, '#{contents.sample}', #{ids.sample}, #{n}, 0, 0),"
   end
-  review_sql << "(#{ratings.sample}, '#{contents.sample}', #{n}, #{n}, 0, 0)" << delim
+  review_sql << "(#{ratings.sample}, '#{contents.sample}', #{ids.sample}, #{n}, 0, 0)" << delim
 end
 
 
