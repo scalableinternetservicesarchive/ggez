@@ -6,50 +6,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# Create CS user for general load testing
-
-example_cs_user = User.create!(
-  username: 'sample_user_cs',
-  industry: 'CS',
-  password: 'a',
-  password_confirmation: 'a',
-  points: 1_000_000_000
-)
-
-Resume.create!(
-  user: example_cs_user,
-  public: true,
-  file: Rails.root.join('app/assets/images/dummy.pdf').open
-)
-
-# Create a Finance user which will have lots of reviews
-
-example_finance_user = User.create!(
-  username: 'sample_user_finance',
-  industry: 'finance',
-  password: 'a',
-  password_confirmation: 'a',
-  points: 1_000_000_000
-)
-
-example_finance_resume = Resume.create!(
-  user: example_finance_user,
-  public: true,
-  file: Rails.root.join('app/assets/images/dummy.pdf').open
-)
-
-
-
 count = 100_000
-review_count = 20
+review_count = 8
 
 user_sql = 'INSERT INTO users '\
-      '(username, industry, password_digest, points, created_at, updated_at)'\
-      ' VALUES '
+           '(username, industry, password_digest, points, created_at, updated_at)'\
+           ' VALUES '
 resume_sql = 'INSERT INTO resumes '\
              '(file, user_id, created_at, updated_at, public)'\
              ' VALUES '
-
 review_sql = 'INSERT INTO reviews '\
              '(rating, content, user_id, resume_id, created_at, updated_at)'\
              ' VALUES '
@@ -68,7 +33,7 @@ review_sql = 'INSERT INTO reviews '\
               'Needs some work']
   ratings = (0...5).to_a
 
-  5.times do
+  (review_count - 1).times do
     review_sql << "(#{ratings.sample}, '#{contents.sample}', #{n}, #{n}, 0, 0),"
   end
   review_sql << "(#{ratings.sample}, '#{contents.sample}', #{n}, #{n}, 0, 0)" << delim
