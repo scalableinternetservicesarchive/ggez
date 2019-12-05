@@ -7,34 +7,34 @@
     <server host="FILL_IN" port="80" type="tcp"/>
   </servers>
   <load>
-    <arrivalphase phase="1" duration="100" unit="second">
+    <arrivalphase phase="1" duration="50" unit="second">
       <users arrivalrate="0.5" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="2" duration="100" unit="second">
+    <arrivalphase phase="2" duration="50" unit="second">
       <users arrivalrate="1" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="3" duration="100" unit="second">
+    <arrivalphase phase="3" duration="50" unit="second">
       <users arrivalrate="1.5" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="4" duration="100" unit="second">
+    <arrivalphase phase="4" duration="50" unit="second">
       <users arrivalrate="2" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="5" duration="100" unit="second">
+    <arrivalphase phase="5" duration="50" unit="second">
       <users arrivalrate="3" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="6" duration="100" unit="second">
+    <arrivalphase phase="6" duration="50" unit="second">
       <users arrivalrate="4" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="7" duration="100" unit="second">
+    <arrivalphase phase="7" duration="50" unit="second">
       <users arrivalrate="6" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="8" duration="100" unit="second">
+    <arrivalphase phase="8" duration="50" unit="second">
       <users arrivalrate="8" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="9" duration="100" unit="second">
+    <arrivalphase phase="9" duration="50" unit="second">
       <users arrivalrate="12" unit="second"/>
     </arrivalphase>
-    <arrivalphase phase="10" duration="100" unit="second">
+    <arrivalphase phase="10" duration="50" unit="second">
       <users arrivalrate="16" unit="second"/>
     </arrivalphase>
   </load>
@@ -138,6 +138,27 @@
           <http_header name='Accept-Encoding' value='gzip, deflate'/>
           <http_header name='Accept-Language' value='en-US,en;q=0.5'/>
         </http>
+      </request>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <dyn_variable name="resume_id" re="/resumes/(\d+)"/>
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+      <!-- Make resume public -->
+      <request subst="true">
+        <http url="/resume/%%_resume_id%%/swap_public" method="POST"
+              contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%'
+              content_type='application/x-www-form-urlencoded' />
       </request>
 
       <!-- Go (redirected) to account page -->
@@ -294,6 +315,28 @@
           <http_header name='Accept-Encoding' value='gzip, deflate'/>
           <http_header name='Accept-Language' value='en-US,en;q=0.5'/>
         </http>
+      </request>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <dyn_variable name="resume_id" re="/resumes/(\d+)"/>
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+
+      <!-- Make resume public -->
+      <request subst="true">
+        <http url="/resume/%%_resume_id%%/swap_public" method="POST"
+              contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%'
+              content_type='application/x-www-form-urlencoded' />
       </request>
 
       <!-- Go (redirected) to account page -->

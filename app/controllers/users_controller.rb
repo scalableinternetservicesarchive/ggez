@@ -3,11 +3,13 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
 
   # GET /users/1
-  def show; end
+  def show
+  end
 
   # GET /users/new
   def new
     @user = User.new
+    fresh_when(@user)
   end
 
   # GET /users/1/edit
