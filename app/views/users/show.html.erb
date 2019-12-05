@@ -2,7 +2,7 @@
   <p class="alert"><%= flash[:error] %></p>
 <% end %>
 
-<% if current_user.id == @user.id %>
+<% if current_user["id"] == @user.id %>
   <h1>My Account</h1>
 <% else %>
   <h1>Account</h1>

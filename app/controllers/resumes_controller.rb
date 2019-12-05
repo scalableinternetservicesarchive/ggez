@@ -12,7 +12,7 @@ class ResumesController < ApplicationController
   # POST /resumes
   def create
     @resume = Resume.new(resume_params)
-    @resume.user_id = current_user.id
+    @resume.user_id = current_user["id"]
 
     if @resume.save
       redirect_to root_path, notice: "The resume for user #{@resume.user_id} has been created."
@@ -46,9 +46,9 @@ class ResumesController < ApplicationController
     # .where.not(reviews: { user_id: current_user.id })
     resume = Resume.joins(:user)
                    .where(public: true)
-                   .where.not(user_id: current_user.id)
+                   .where.not(user_id: current_user["id"])
                    .where.not(users: { points: 0 })
-                   .where(users: { industry: current_user.industry })
+                   .where(users: { industry: current_user["industry"] })
                    .sample
 
     if resume.nil?
@@ -70,7 +70,7 @@ class ResumesController < ApplicationController
   end
 
   def check_user
-    return if logged_in? && @resume.user_id == current_user.id
+    return if logged_in? && @resume.user_id == current_user["id"]
 
     redirect_to root_path
   end

@@ -4,7 +4,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <% if logged_in? %>
         <div class="navbar-nav">
-          <%= link_to 'My Account', current_user, class: 'nav-item nav-link active'%>
+          <%= link_to 'My Account', user_path(current_user["id"]), class: 'nav-item nav-link active'%>
           <%= link_to 'Add Resume', new_resume_path, class: 'nav-item nav-link active'%>
           <%= link_to 'Review A Resume', random_resume_path, method: 'post', class: 'nav-item nav-link active'%>
         </div>

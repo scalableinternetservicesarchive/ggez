@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
+  before_action :set_user, only: %i[show edit update destroy]
 
   # GET /users/1
   def show; end
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      log_in(@user.id)
+      log_in(@user)
       redirect_to @user, notice: 'Account was successfully created.'
     else
       render :new
@@ -29,6 +29,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
+      log_in(@user)
       redirect_to @user, notice: 'Account was successfully updated.'
     else
       render :edit
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def correct_user
-    redirect_to root_path if !logged_in? || @user != current_user
+    redirect_to root_path if !logged_in? || params[:id] != current_user["id"]
   end
 
   def set_user

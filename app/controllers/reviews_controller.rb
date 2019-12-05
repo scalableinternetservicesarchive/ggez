@@ -6,10 +6,10 @@ class ReviewsController < ApplicationController
   # POST /reviews.json
   def create
     @review = Review.new(review_params)
-    @review.user_id = current_user.id
+    @review.user_id = current_user["id"]
     if @review.save
       @review.resume.user.update(points: @review.resume.user.points - 1)
-      current_user.update(points: current_user.points + 1)
+      User.update(current_user["id"], points: current_user["points"] + 1)
       redirect_to @review.resume, notice: 'Review was successfully created.'
     else
       redirect_to @review.resume, notice: 'Review was not successfully created.'
@@ -41,7 +41,7 @@ class ReviewsController < ApplicationController
   end
 
   def check_user
-    return if logged_in? && @review.user_id == current_user.id
+    return if logged_in? && @review.user_id == current_user["id"]
 
     redirect_to root_path
   end

@@ -13,9 +13,9 @@
       <td><%= link_to resume.file, resume %></td>
       <td>
         <% if resume.public %>
-          Yes <%= link_to 'Hide', swap_public_path, method: :post %>
+          Yes <%= link_to 'Hide', swap_public_path(resume), method: :post %>
         <% else %>
-          No <%= link_to 'Make Public', swap_public_path, method: :post %>
+          No <%= link_to 'Make Public', swap_public_path(resume), method: :post %>
         <% end %>
         </td>
       <td><%= link_to 'Delete', resume, method: :delete, data: { confirm: 'Are you sure?' } %></td>
