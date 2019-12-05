@@ -273,6 +273,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   carrierwave (~> 2.0)
   dalli-elasticache
+  dalli
   fog-aws
   font-awesome-sass (~> 5.11.2)
   jbuilder (~> 2.7)
