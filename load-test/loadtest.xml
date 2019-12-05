@@ -154,6 +154,27 @@
       </setdynvars>
       <thinktime random='true' value='1'/>
 
+      <!-- Make resume public -->
+      <request subst="true">
+        <http url="/resume/%%_resume_id%%/swap_public" method="POST"
+              contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%'
+              content_type='application/x-www-form-urlencoded' />
+      </request>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <dyn_variable name="resume_id" re="/resumes/(\d+)"/>
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
       <!-- Check reviews on my resume -->
       <for from="1" to="5" var="counter">
         <request subst="true">
@@ -294,6 +315,28 @@
           <http_header name='Accept-Encoding' value='gzip, deflate'/>
           <http_header name='Accept-Language' value='en-US,en;q=0.5'/>
         </http>
+      </request>
+
+      <!-- Go (redirected) to account page -->
+      <request subst="true">
+        <dyn_variable name="resume_id" re="/resumes/(\d+)"/>
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"/>
+        <http url='/users/%%_created_user_id%%'/>
+      </request>
+      <setdynvars sourcetype="eval"
+                  code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+        <var name="encoded_authenticity_token"/>
+      </setdynvars>
+      <thinktime random='true' value='1'/>
+
+
+      <!-- Make resume public -->
+      <request subst="true">
+        <http url="/resume/%%_resume_id%%/swap_public" method="POST"
+              contents='_method=post&amp;authenticity_token=%%_encoded_authenticity_token%%'
+              content_type='application/x-www-form-urlencoded' />
       </request>
 
       <!-- Go (redirected) to account page -->
